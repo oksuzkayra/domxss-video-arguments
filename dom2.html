@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Form Sayfası</title>
+</head>
+<body>
+    <input type="text" id="userInput">
+    <button onclick="updateContent()">Veriyi Göster</button>
+    <div id="output"></div>
+    <script>
+        function updateContent() {
+          var userInput = document.getElementById('userInput').value;
+          document.getElementById('output').innerHTML = userInput;
+        }
+    </script>
+</body>
+</html>

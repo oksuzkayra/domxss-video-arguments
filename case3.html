@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Movie Search</title>
+    <script>
+        function searchMovie() {
+            const movieParam = document.getElementById('movieInput').value.trim();
+
+            if (!movieParam) {
+                alert("Please enter a movie name.");
+                return;
+            }
+
+            const xhr = new XMLHttpRequest();
+            xhr.open('GET', 'search_movie.php?movie=' + encodeURIComponent(movieParam), true);
+
+            xhr.onload = function() {
+                if (xhr.status === 200) {
+                    const response = JSON.parse(xhr.responseText);
+                    document.getElementById('query').innerHTML = "Query: " + response.query;
+                    let moviesList = "Movies: ";
+                    if (response.movies.length > 0) {
+                        moviesList += response.movies.map(movie => `${movie.title} (${movie.year})`).join(', ');
+                    } else {
+                        moviesList += "No movies found.";
+                    }
+                    document.getElementById('movies').innerHTML = moviesList;
+                } else {
+                    alert("Error: " + xhr.status);
+                }
+            };
+
+            xhr.send();
+        }
+    </script>
+</head>
+<body>
+    <h1>Movie Search</h1>
+    <input type="text" id="movieInput" placeholder="Enter movie name" />
+    <button onclick="searchMovie()">Search</button>
+    <p id="query"></p>
+    <p id="movies"></p>
+</body>
+</html>

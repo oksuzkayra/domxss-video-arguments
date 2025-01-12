@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Yorumlar</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <style>
+        .comments-list { margin-top: 20px; }
+        .comment { padding: 10px; border: 1px solid #ddd; margin-bottom: 10px; }
+    </style>
+</head>
+<body>
+
+    <h1>Yorumlar</h1>
+    <form id="commentForm">
+        <label for="username">Kullanıcı Adı:</label>
+        <input type="text" id="username" name="username" required><br><br>
+
+        <label for="comment">Yorum:</label>
+        <textarea id="comment" name="comment" required></textarea><br><br>
+
+        <button type="submit">Yorum Ekle</button>
+    </form>
+
+    <div class="comments-list" id="commentsList">
+        <!-- Yorumlar buraya yüklenecek -->
+    </div>
+
+    <script>
+        $(document).ready(function() {
+            loadComments();
+
+            $('#commentForm').submit(function(e) {
+                e.preventDefault();
+
+                var username = $('#username').val();
+                var comment = $('#comment').val();
+
+                $.ajax({
+                    url: 'add_comment.php',
+                    method: 'GET',
+                    data: { username: username, comment: comment },
+                    success: function(response) {
+                        $('#commentForm')[0].reset();
+                        loadComments();
+                    }
+                });
+            });
+        });
+        function loadComments() {
+            $.ajax({
+                url: 'add_comment.php',
+                method: 'GET',
+                success: function(response) {
+                    try {
+                        var comments = response;
+                        var commentsHtml = '';
+
+                        // Yorumları listele
+                        comments.forEach(function(comment) {
+                            commentsHtml += '<div class="comment"><strong>' + comment.username + ':</strong> ' + comment.comment + '<br><small>' + comment.created_at + '</small></div>';
+                        });
+
+                        $('#commentsList').html(commentsHtml);
+                    } catch (e) {
+                        console.error('JSON Parsing Error:', e);
+                    }
+                },
+                error: function(xhr, status, error) {
+                    console.error('AJAX Error:', error);
+                }
+            });
+        }
+    </script>
+
+</body>
+</html>
+

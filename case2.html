@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>jQuery ile DOM XSS</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+    <h1 id="output"></h1>
+
+    <script>
+        // Source: location.search (URL query string)
+        var userInput = new URLSearchParams(window.location.search).get('name');
+        
+        // Sink: .html()
+        $('#output').html("Merhaba, " + userInput);
+    </script>
+</body>
+</html>

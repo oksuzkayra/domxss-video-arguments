@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>eval() ile DOM XSS</title>
+</head>
+<body>
+    <input type="text" id="mathInput" placeholder="Bir işlem girin (ör. 2+2)">
+    <button onclick="calculate()">Hesapla</button>
+    <div id="result"></div>
+
+    <script>
+        function calculate() {
+            var input = document.getElementById('mathInput').value;
+            var result = eval(input);
+            document.getElementById('result').innerText = "Sonuç: " + result;
+        }
+    </script>
+</body>
+</html>

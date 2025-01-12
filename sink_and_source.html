@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>DOM XSS Test Cases</title>
+</head>
+<body>
+    <h1>DOM XSS Test Cases</h1>
+
+    <h2>1. document.URL with document.write()</h2>
+    <script>
+        document.write("document.URL: " + decodeURIComponent(document.URL));
+    </script>
+
+    <h2>2. document.documentURI with document.writeln()</h2>
+    <script>
+        document.writeln("<br>document.URI: " + decodeURIComponent(document.documentURI));
+    </script>
+
+    <h2>3. document.baseURI with element.innerHTML</h2>
+    <div id="innerHTMLTest"></div>
+    <script>
+        var div1 = document.getElementById("innerHTMLTest");
+        div1.innerHTML = "document.baseURI: " + decodeURIComponent(document.baseURI);
+    </script>
+
+    <h2>4. location.search with element.outerHTML</h2>
+    <div id="outerHTMLTest"></div>
+    <script>
+        var div2 = document.getElementById("outerHTMLTest");
+        div2.outerHTML = "<div>location.search: " + decodeURIComponent(location.search) + "</div>";
+    </script>
+
+    <h2>5. localStorage with element.insertAdjacentHTML</h2>
+    <div id="insertAdjacentHTMLTest"></div>
+    <script>
+        var div3 = document.getElementById("insertAdjacentHTMLTest");
+        div3.insertAdjacentHTML("beforeend", "localStorage.getItem: " + localStorage.getItem("a"));
+    </script>
+
+</body>
+</html>
